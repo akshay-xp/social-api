@@ -12,11 +12,26 @@ model User {
   email    String @unique @db.VarChar(255)
   username String @unique @db.VarChar(30)
 
-  password String
+  password     String
+  refreshToken String?
 
   fullname String? @db.VarChar(50)
   bio      String? @db.VarChar(150)
 
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  Post Post[]
+}
+
+model Post {
+  id      String @id @default(uuid()) @db.Uuid
+  title   String @db.VarChar(70)
+  content String @db.VarChar(280)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  posterId String @db.Uuid
+  poster   User   @relation(fields: [posterId], references: [id])
 }
