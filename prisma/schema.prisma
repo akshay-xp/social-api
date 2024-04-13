@@ -21,7 +21,8 @@ model User {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  Post Post[]
+  Post    Post[]
+  Comment Comment[]
 }
 
 model Post {
@@ -34,4 +35,20 @@ model Post {
 
   posterId String @db.Uuid
   poster   User   @relation(fields: [posterId], references: [id])
+
+  Comment Comment[]
+}
+
+model Comment {
+  id      String @id @default(uuid()) @db.Uuid
+  content String @db.VarChar(100)
+
+  postId String @db.Uuid
+  post   Post   @relation(fields: [postId], references: [id])
+
+  authorId String @db.Uuid
+  author   User   @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 }
