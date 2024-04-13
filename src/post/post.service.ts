@@ -26,13 +26,28 @@ export class PostService {
         },
       });
     }
-    return await this.prisma.post.findMany();
+    return await this.prisma.post.findMany({
+      include: {
+        poster: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
   }
 
   async getPost(postId: string) {
     const post = await this.prisma.post.findUnique({
       where: {
         id: postId,
+      },
+      include: {
+        poster: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
     return post;
