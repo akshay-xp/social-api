@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async getProfile(userId: string) {
+  async getProfile(userId: string, followerId?: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -16,6 +16,10 @@ export class UserService {
         username: true,
         fullname: true,
         bio: true,
+        following: {
+          where: { followerId },
+          take: 1,
+        },
       },
     });
 

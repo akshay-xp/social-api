@@ -21,8 +21,10 @@ model User {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  Post    Post[]
-  Comment Comment[]
+  Post      Post[]
+  Comment   Comment[]
+  follower  Follow[]  @relation("follower")
+  following Follow[]  @relation("following")
 }
 
 model Post {
@@ -51,4 +53,14 @@ model Comment {
 
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
+}
+
+model Follow {
+  followerId String @db.Uuid
+  follower   User   @relation("follower", fields: [followerId], references: [id])
+
+  followingId String @db.Uuid
+  following   User   @relation("following", fields: [followingId], references: [id])
+
+  @@id([followingId, followerId])
 }
