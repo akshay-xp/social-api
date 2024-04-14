@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AddComment, EditComment } from './dto';
+import { AddComment, CommentQueries, EditComment } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -15,14 +15,16 @@ export class CommentService {
     });
   }
 
-  getComments(postId: string) {
+  getComments(query: CommentQueries) {
     return this.prisma.comment.findMany({
       where: {
-        postId,
+        postId: query.postId,
+        authorId: query.authorId,
       },
       include: {
         author: {
           select: {
+            id: true,
             username: true,
           },
         },

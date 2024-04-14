@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guard';
 import { UserService } from './user.service';
 import { User } from '@prisma/client';
@@ -11,8 +11,13 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getProfile(@GetUser() user: User) {
+  getUser(@GetUser() user: User) {
     return this.userService.getProfile(user.id);
+  }
+
+  @Get(':id')
+  getProfile(@Param('id') id: string) {
+    return this.userService.getProfile(id);
   }
 
   @UseGuards(JwtAuthGuard)

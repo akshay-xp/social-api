@@ -12,7 +12,7 @@ import {
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { CommentService } from './comment.service';
-import { AddComment } from './dto';
+import { AddComment, CommentQueries } from './dto';
 import { JwtAuthGuard } from 'src/auth/guard';
 
 @Controller('comments')
@@ -26,8 +26,8 @@ export class CommentController {
   }
 
   @Get()
-  getComments(@Query('postId') postId: string) {
-    return this.commentService.getComments(postId);
+  getComments(@Query() query: CommentQueries) {
+    return this.commentService.getComments(query);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -24,12 +24,21 @@ export class PostService {
         where: {
           posterId,
         },
+        include: {
+          poster: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
       });
     }
     return await this.prisma.post.findMany({
       include: {
         poster: {
           select: {
+            id: true,
             username: true,
           },
         },
@@ -45,6 +54,7 @@ export class PostService {
       include: {
         poster: {
           select: {
+            id: true,
             username: true,
           },
         },
